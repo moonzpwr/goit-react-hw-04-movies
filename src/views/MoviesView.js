@@ -1,8 +1,12 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
-import SearchBar from "../components/SearchBar/SearchBar";
-import movieAPI from '../utils/movie-api';
 import propTypes from 'prop-types';
+import  { Suspense, lazy } from 'react';
+
+import movieAPI from '../utils/movie-api';
+
+const SearchBar = lazy(() => import('../components/SearchBar/SearchBar' /* webpackChunkName: "search-bar" */))
+
 
 export default class MoviesViev extends Component {
     state = {
@@ -38,7 +42,9 @@ export default class MoviesViev extends Component {
         const {movies} = this.state
         return (
             <>
-                <SearchBar onSubmit={this.handleChangeQuery}/>
+                <Suspense fallback={<h1>Loading...</h1>}>
+                    <SearchBar onSubmit={this.handleChangeQuery} />
+                </Suspense>
 
                 {movies  && 
                     <ul className="search-container">

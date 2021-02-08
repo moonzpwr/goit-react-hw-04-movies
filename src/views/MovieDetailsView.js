@@ -1,12 +1,15 @@
 import { Component } from 'react';
 import { NavLink, Route } from 'react-router-dom';
+import  { Suspense, lazy } from 'react';
 import propTypes from 'prop-types';
-
-import Cast from '../components/Cast/Cast';
-import Reviews from '../components/Reviews/Reviews';
 
 import routes from '../routes';
 import movieAPI from '../utils/movie-api';
+
+const Cast = lazy(() => import('../components/Cast/Cast' /* webpackChunkName: "cast" */))
+const Reviews = lazy(() => import('../components/Reviews/Reviews' /* webpackChunkName: "reviews" */))
+
+
 
 
 export default class MoviesDetailsViev extends Component {
@@ -63,8 +66,10 @@ export default class MoviesDetailsViev extends Component {
                         <li><NavLink to={`${this.props.match.url}/reviews`}>Reviews</NavLink></li>
                     </ul>
                 </div>
-                <Route path={`${this.props.match.path}/cast`} component={Cast} />
-                <Route path={`${this.props.match.path}/reviews`}  component={Reviews}/>
+                <Suspense fallback={<h1>Loading...</h1>}>
+                    <Route path={`${this.props.match.path}/cast`} component={Cast} />
+                    <Route path={`${this.props.match.path}/reviews`} component={Reviews} />
+                </Suspense>
             </>
         )
     }
