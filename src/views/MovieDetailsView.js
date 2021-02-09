@@ -8,6 +8,7 @@ import movieAPI from '../utils/movie-api';
 
 const Cast = lazy(() => import('../components/Cast/Cast' /* webpackChunkName: "cast" */))
 const Reviews = lazy(() => import('../components/Reviews/Reviews' /* webpackChunkName: "reviews" */))
+const AdditionalInformation = lazy(() => import('../components/AdditionalInformation/AdditionalInformation' /* webpackChunkName: "AdditionalInformation" */))
 
 
 
@@ -31,10 +32,11 @@ export default class MoviesDetailsViev extends Component {
         if (state && state.from) {
             return this.props.history.push(state.from)
         }
-        this.props.history.push(routes.home)
+        // this.props.history.push(routes.home)
     }
 
     render() {
+    
         return (
             <>
                 <button type="button" onClick={this.handleGoBack} className='back-btn'>Go back</button>
@@ -59,13 +61,9 @@ export default class MoviesDetailsViev extends Component {
                             </ul>
                     </div>
                 </div>
-                <div className='additionalInfo'>
-                <p>Additional information</p>
-                    <ul>
-                        <li><NavLink to={`${this.props.match.url}/cast`}>Cast</NavLink></li>
-                        <li><NavLink to={`${this.props.match.url}/reviews`}>Reviews</NavLink></li>
-                    </ul>
-                </div>
+                
+                <AdditionalInformation url={this.props.match.url} from={this.props.location.state?.from }/>
+
                 <Suspense fallback={<h1>Loading...</h1>}>
                     <Route path={`${this.props.match.path}/cast`} component={Cast} />
                     <Route path={`${this.props.match.path}/reviews`} component={Reviews} />
